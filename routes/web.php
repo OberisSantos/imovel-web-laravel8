@@ -18,11 +18,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-
-
-//Route::get('/', [EventController::class, 'index']);
-
-//Route::get('/event/create', [EventController::class, 'create']);
 Route::get('/', [DonoControlador::class, 'index']);
 
 Route::get('/prop/create', [DonoControlador::class, 'create'])->middleware('auth');

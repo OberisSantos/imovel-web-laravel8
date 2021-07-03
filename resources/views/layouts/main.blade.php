@@ -14,6 +14,7 @@
         <!--CSS da aplicação -->
         <link rel="stylesheet" href="/css/style.css">
 
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:400" rel="stylesheet">
 
   </head>
   <body class="d-flex flex-column h-100">

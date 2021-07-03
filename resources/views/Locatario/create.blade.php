@@ -4,7 +4,7 @@
 
 @section('conteudo')
 
-    <div class="col-md-6 offset-md-3 shadow p-3 mb-5 rounded" id="form_prop" ><!--bg-white-->
+    <div class="col-md-6 offset-md-3 p-3 mb-5" id="form_prop" ><!--bg-white-->
         <div class="titulo-form">
             <h3 >Novo Locatário</h3>
         </div>

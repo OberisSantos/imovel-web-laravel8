@@ -23,7 +23,7 @@ class DonoControlador extends Controller
      */
     public function index() //tela home
     {
-      return view('layouts.main');
+      return view('web-site.index');
     }
 
     /**

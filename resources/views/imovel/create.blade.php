@@ -3,7 +3,7 @@
 @section('titulo', 'Novo imovel')
 
 @section('conteudo')
-    <div class="col-md-6 offset-md-3 shadow p-3 mb-5 rounded" id="form_prop" ><!--bg-white-->
+    <div class="col-md-6 offset-md-3 p-3 mb-5" id="form_prop" ><!--bg-white-->
         <div class="titulo-form">
             <h3 >Novo Imóvel</h3>
         </div>
@@ -69,10 +69,6 @@
             </div>
 
 
-            <hr>
-            <div class="form-group">
-                <label for="">Endereço do imóvel</label>
-            </div>
             <div class="form-row">
                 <div class="col-9">
                     <div class="form-group">
