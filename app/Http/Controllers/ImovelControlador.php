@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Endereco;
+use App\Models\Imagem;
 use App\Models\Imovel;
 use Facade\FlareClient\Stacktrace\File;
 use Illuminate\Http\Request;
@@ -18,7 +19,7 @@ class ImovelControlador extends Controller
      */
     public function index()
     {
-        //
+        return view('web-site.index');
     }
 
     /**
@@ -44,51 +45,56 @@ class ImovelControlador extends Controller
      */
     public function store(Request $request)
     {
+        $user = auth()->user();
+        if($user->dono){
+            //1 - criar um endereco
+            $end = new Endereco();
+            $end->rua = $request->rua;
+            $end->numero = $request->numero;
+            $end->bairro = $request->bairro;
+            $end->cep = $request->cep;
+            $end->cidade = $request->cidade;
+            $end->uf = $request->uf;
+            $end->latitude = $request->lat;
+            $end->longitude = $request->long;
+            $end->referencia = $request->referencia;
 
-        //1 - criar um endereco
-        $end = new Endereco();
-        $end->rua = $request->rua;
-        $end->numero = $request->numero;
-        $end->bairro = $request->bairro;
-        $end->cep = $request->cep;
-        $end->cidade = $request->cidade;
-        $end->uf = $request->uf;
-        $end->latitude = $request->lat;
-        $end->longitude = $request->long;
-        $end->referencia = $request->referencia;
+            $end->save();
 
-        $end->save();
+            //2 - criar um imovel
+            $imovel = new Imovel();
+            $imovel->tipo = $request->tipo;
+            $imovel->garagem = $request->garagem;
+            if($request->garagem == 'sim'){
+                $imovel->vagas_garagem = $request->vagas_garagem;
+            }
+            $imovel->qt_quartos = $request->qt_quartos;
+            $imovel->qt_suite = $request->qt_suite;
+            $imovel->valor = $request->valor;
+            $imovel->status = 'Aguardando';//'Disponivel', 'Alugado', 'Aguardando'
 
-        //2 - criar um imovel
-        $imovel = new Imovel();
-        $imovel->tipo = $request->tipo;
-        $imovel->garagem = $request->garagem;
-        if($request->garagem == 'sim'){
-            $imovel->vagas_garagem = $request->vagas_garagem;
+            // Imagem Upload
+            if($request->hasFile('image') && $request->file('image')->isValid()) {
+                $requestImage = $request->image;
+
+                $extension = $requestImage->extension();
+                //$name = uniqid(date('HisYmd'));
+                $imageName = md5($requestImage->getClientOriginalName() . strtotime("now")) . "." . $extension;
+                //$imageName = "{$name}.{$extension}";
+
+                $requestImage->move(public_path('img/imovel'), $imageName);
+
+                $imovel->img_perfil = $imageName;
+
+            }
+            $imovel->endereco()->associate($end->id);
+            $imovel->dono()->associate(1);//encontrar uma maneira de trazer o dono
+            $imovel->save();
+            return redirect("/imagem/add/$imovel->id")->with('msg', 'Imóvel cadastrado com sucesso!');
         }
-        $imovel->qt_quartos = $request->qt_quartos;
-        $imovel->qt_suite = $request->qt_suite;
-        $imovel->valor = $request->valor;
-        $imovel->status = 'Aguardando';//'Disponivel', 'Alugado', 'Aguardando'
 
-          // Imagem Upload
-        if($request->hasFile('image') && $request->file('image')->isValid()) {
-            $requestImage = $request->image;
+        return redirect('/prop/create');
 
-            $extension = $requestImage->extension();
-            //$name = uniqid(date('HisYmd'));
-            $imageName = md5($requestImage->getClientOriginalName() . strtotime("now")) . "." . $extension;
-            //$imageName = "{$name}.{$extension}";
-
-            $requestImage->move(public_path('img/imovel'), $imageName);
-
-            $imovel->img_perfil = $imageName;
-
-        }
-        $imovel->endereco()->associate($end->id);
-        $imovel->dono()->associate(1);//encontrar uma maneira de trazer o dono
-        $imovel->save();
-        return redirect("/imagem/add/$imovel->id")->with('msg', 'Imóvel cadastrado com sucesso!');
 
         //return view('proprietario.create', ['imovel'=> $imovel->id])->with('msg', 'Imovel foi salvo com sucesso!');
         //return redirect()->route('imagem/create/', ['imovel'=> $imovel->id])->with('msg', 'Imovel foi salvo com sucesso!');
@@ -104,7 +110,15 @@ class ImovelControlador extends Controller
      */
     public function show($id)
     {
-        //
+        $user = auth()->user();
+        $imovel = Imovel::find($id);
+        if($imovel != null){
+            if($user->dono->id == $imovel->dono_id){
+                return view('imovel.show', ['imovel'=> $imovel]);
+            }
+
+        }
+        return redirect('/dashboard');
     }
 
     /**

@@ -42,7 +42,7 @@
             <div class="form-row text-right">
                 <div class="col-12">
                     <button type="submit" id='salvar' class='btn btn-success btn-sm'>Salvar</button>
-                    <a href=""><button type="button" id='concluir' class='btn btn-danger btn-sm'>Concluir</button></a>
+                    <a href="/imovel/{{$imovel->id}}"><button type="button" id='concluir' class='btn btn-danger btn-sm'>Concluir</button></a>
                 </div>
             </div>
 

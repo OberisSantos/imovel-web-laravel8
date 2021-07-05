@@ -17,7 +17,7 @@ class CreateContasareceberTable extends Migration
             $table->id();
             $table->date('vencimento');
             $table->date('pagamento')->nullable();
-            $table->double('valor_recebido', 4,2)->nullable();
+            $table->double('valor_recebido', 6, 2)->nullable();
             $table->foreignId('contrato_id')
             ->constrained()
             ->onDelete('cascade');

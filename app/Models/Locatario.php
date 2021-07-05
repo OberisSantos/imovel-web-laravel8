@@ -28,4 +28,8 @@ class Locatario extends Model
     {
         return $this->hasMany(Contrato::class);
     }
+
+    public function dono(){
+        return $this->belongsTo(Dono::class);
+    }
 }

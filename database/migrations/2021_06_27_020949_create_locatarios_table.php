@@ -31,6 +31,12 @@ class CreateLocatariosTable extends Migration
             ->on('contatos')
             ->constrained()
             ->onDelete('cascade');
+
+            $table->foreignId('dono_id')
+            ->references('id')
+            ->on('donos')
+            ->constrained()
+            ->onDelete('cascade');
             /*
             $table->foreignId('perfil_id')->nullable()
             ->references('id')

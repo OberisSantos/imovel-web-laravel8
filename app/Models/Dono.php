@@ -27,4 +27,8 @@ class Dono extends Model
     {
         return $this->belongsTo(User::class); //trazer a chave belongsTo: pertence a um
     }
+
+    public function locatario(){
+        return $this->hasOne(Locatario::class); //levar a chave
+    }
 }

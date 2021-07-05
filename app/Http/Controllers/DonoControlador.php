@@ -23,7 +23,7 @@ class DonoControlador extends Controller
      */
     public function index() //tela home
     {
-      return view('web-site.index');
+      //
     }
 
     /**
@@ -33,7 +33,13 @@ class DonoControlador extends Controller
      */
     public function create() //usado para chamar o formulário de criar
     {
-        return view('proprietario.create');
+        $user = auth()->user();
+
+        if(!Dono::where('user_id', $user->id)->count()>0){
+            return view('proprietario.create');
+        }
+        return redirect("/proprietario/$user->dono()->id");
+
     }
 
     /**
@@ -43,61 +49,62 @@ class DonoControlador extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)//inserir valor no banco de dados
-    {   //1 - criar um endereco e salvar
-        $end = new Endereco();
-        $end->rua = $request->rua;
-        $end->bairro = $request->bairro;
-        $end->numero = $request->numero;
-        $end->cep = $request->cep;
-        $end->cidade = $request->cidade;
-        $end->uf = $request->uf;
-
-        $end->save();
-
-        //1 - cverificar se possuir perfil se não possuir criar um
-        //$perfil = Perfil::where('perfil','2')->exists(); //retorna false ou true
-        //$perfil = Perfil::where('perfil','2')->get(); //retorna o valor se encontrar
-        /*$perfil = new Perfil();
-        if($perfil->perfil_exists('1')){
-            $perfil->perfil = '1';
-            $perfil->descricao = 'Proprietario';
-            $perfil->save();
-
-        }
-        $perfil = Perfil::where('perfil','1')->get();
-        foreach ($perfil as $key) {
-            $perfil_id = ($key->id);
-        }*/
-
-        $tel = new Contato();
-        $tel->tel = $request->tel;
-        $tel->tipo = $request->tipo;
-
-        $tel->save();
-
-
-        //3 - criar um proprietário(Dono) com os dados de endereco e perfil
-        $prop = new Dono();
-        $prop->nome = $request->nome;
-        $prop->cpf = $request->cpf;
-        $prop->rg = $request->rg;
-        $prop->email = $request->email;
-        $prop->endereco()->associate($end->id);
-        //$prop->perfil()->associate($perfil_id);
-        $prop ->contato()->associate($tel->id);
-
+    {
         $user = auth()->user();
 
-        $prop->user_id = $user->id;
+        if(!Dono::where('user_id', $user->id)->count()>0){
+            //1 - criar um endereco e salvar
+            $end = new Endereco();
+            $end->rua = $request->rua;
+            $end->bairro = $request->bairro;
+            $end->numero = $request->numero;
+            $end->cep = $request->cep;
+            $end->cidade = $request->cidade;
+            $end->uf = $request->uf;
 
-        $prop->save();
+            $end->save();
 
-        // $end->Dono()->associate($prop->id);
+            //1 - cverificar se possuir perfil se não possuir criar um
+            //$perfil = Perfil::where('perfil','2')->exists(); //retorna false ou true
+            //$perfil = Perfil::where('perfil','2')->get(); //retorna o valor se encontrar
+            /*$perfil = new Perfil();
+            if($perfil->perfil_exists('1')){
+                $perfil->perfil = '1';
+                $perfil->descricao = 'Proprietario';
+                $perfil->save();
 
-        //$end->save();
+            }
+            $perfil = Perfil::where('perfil','1')->get();
+            foreach ($perfil as $key) {
+                $perfil_id = ($key->id);
+            }*/
 
+            $tel = new Contato();
+            $tel->tel = $request->tel;
+            $tel->tipo = $request->tipo;
 
-        return redirect ('prop/create')->with('msg','Proprietário cadastrado com sucesso!');
+            $tel->save();
+            //3 - criar um proprietário(Dono) com os dados de endereco e perfil
+            $prop = new Dono();
+            $prop->nome = $request->nome;
+            $prop->cpf = $request->cpf;
+            $prop->rg = $request->rg;
+            $prop->email = $request->email;
+            $prop->endereco()->associate($end->id);
+            //$prop->perfil()->associate($perfil_id);
+            $prop ->contato()->associate($tel->id);
+
+            $prop->user_id = $user->id;
+
+            $prop->save();
+
+            // $end->Dono()->associate($prop->id);
+
+            //$end->save();
+
+            return redirect ('prop/create')->with('msg','Proprietário cadastrado com sucesso!');
+        }
+        return redirect("/proprietario/$user->dono()->id");
     }
 
     /**
@@ -108,8 +115,15 @@ class DonoControlador extends Controller
      */
     public function show($id) //busca com base em um atributo
     {
-        //
+        $user = auth()->user();
+
+        if(Dono::where('user_id', $user->id)->count()>0){
+            $dono = Dono::find($user->id);
+            return view('proprietario.show', ['dono'=>$dono]);
+        }
+        return redirect('/dashboard')->with('msg', 'Usuário ainda não está cadastrado como proprietário de imóveis!');
     }
+
 
     /**
      * Show the form for editing the specified resource.
