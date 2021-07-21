@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Http\Controllers\ImovelControlador;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -10,6 +11,9 @@ class Imovel extends Model
     use HasFactory;
 
     protected $table = "imoveis";
+    protected $guarded = [];//permitir update
+
+
 
     public function endereco(){
         return$this->belongsTo(Endereco::class); //trazer a chave de endereco

@@ -15,7 +15,7 @@
             <table class="table table-sm shadow-sm">
                 <thead class="thead-light">
                     <tr>
-                        <th>ID</th>
+                        <th>Contrato</th>
                         <th>Locatário</th>
                         <th>Imóvel</th>
                         <th>Nº</th>
@@ -39,6 +39,7 @@
                         <td>{{$contrato->dia_pagamento}}</td>
                         <td>{{$contrato->situacao}}</td>
                         <td>
+
                             @if ($contrato->situacao == 'Pendente')
                                 <a href="/contrato/edit/{{$contrato->id}}"><button class="btn btn-success" title="Concluir Cadastro">Confirmar</button></a>
                             @elseif ($contrato->situacao == 'Aberto')
@@ -64,7 +65,7 @@
             <table class="table table-sm shadow-sm">
                 <thead class="thead-light">
                     <tr>
-                        <th>ID</th>
+                        <th>Contrato</th>
                         <th>Locatário</th>
                         <th>Imóvel</th>
                         <th>Inicio</th>
@@ -77,12 +78,12 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($locatarios as $lt)
+                    @foreach ($contratos as $contrato)
 
                     <tr>
                         <td>{{$contrato->id}}</td>
                         <td>{{$contrato->locatario->nome}}</td>
-                        <td>{{$contrato->imovel->rua}}| nº {{$contrato->imovel->numero}}</td>
+                        <td>{{$contrato->imovel->endereco->rua}}| nº {{$contrato->imovel->endereco->numero}}</td>
 
                         <td>
 
@@ -96,8 +97,13 @@
                         <td>{{$contrato->situacao}}</td>
                         <td>{{$contrato->created_at}}</td>
                         <td>
-                            <a href="/contrato/edit/{{$contrato->id}}"><button class="btn btn-danger">Confirmar</button></a>
-                            <a href=""><button class="btn btn-secondary">Editar</button></a>
+                            @if ($contrato->situacao == 'Pendente')
+                                <a href="/contrato/edit/{{$contrato->id}}"><button class="btn btn-success" title="Concluir Cadastro">Confirmar</button></a>
+                            @elseif ($contrato->situacao == 'Aberto')
+                                <a href="/contrato/edit/{{$contrato->id}}"><button class="btn btn-warning" title="Finalizar Contrato">Finalizar</button></a>
+                            @endif
+
+                            <a href="/contrato/edit/{{$contrato->id}}"><button class="btn btn-secondary">Editar</button></a>
                         </td>
 
                     </tr>

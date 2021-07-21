@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Contrato;
 use App\Models\Endereco;
 use App\Models\Imagem;
 use App\Models\Imovel;
@@ -45,6 +46,20 @@ class ImovelControlador extends Controller
      */
     public function store(Request $request)
     {
+        //$data=$request->validate([
+            //'qt_quartos'=>'required']);
+            //'qt_quartos' => 'required|min:5|max:64',
+
+
+        $data = $request->validate([
+            'qt_quartos' => 'required|unique:imoveis,qt_quartos',
+            'qt_suite' => 'required',
+            ], [
+            'qt_quartos.required' => 'Este campo é obrigatório',
+            'qt_quartos.unique' => 'Ja existe esse valor',
+            'qt_suite.required' => 'Informar a quantidade',
+            ]);
+
         $user = auth()->user();
         if($user->dono){
             //1 - criar um endereco
@@ -88,7 +103,7 @@ class ImovelControlador extends Controller
 
             }
             $imovel->endereco()->associate($end->id);
-            $imovel->dono()->associate(1);//encontrar uma maneira de trazer o dono
+            $imovel->dono()->associate($user->dono->id);//encontrar uma maneira de trazer o dono
             $imovel->save();
             return redirect("/imagem/add/$imovel->id")->with('msg', 'Imóvel cadastrado com sucesso!');
         }
@@ -116,9 +131,19 @@ class ImovelControlador extends Controller
             if($user->dono->id == $imovel->dono_id){
                 return view('imovel.show', ['imovel'=> $imovel]);
             }
-
         }
         return redirect('/dashboard');
+    }
+
+    public function list()
+    {
+        $user = auth()->user();
+        if($user->dono){
+            $imoveis = Imovel::all()->where('dono_id', $user->dono->id)->sortByDesc('created_at');
+
+            return view('imovel.list', ['imoveis'=> $imoveis]);
+        }
+        //return view('imovel.list');
     }
 
     /**
@@ -129,7 +154,9 @@ class ImovelControlador extends Controller
      */
     public function edit($id)
     {
-        //
+        $imovel = Imovel::find($id);
+
+        return view('imovel.edit', ['imovel'=> $imovel]);
     }
 
     /**
@@ -141,8 +168,33 @@ class ImovelControlador extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $imovel = [
+            'status' => $request->status,
+
+        ];
+
+        $contas = Contrato::verificarContas($id);
+
+        if ($contas) {
+            Imovel::findOrFail($id)->update($imovel);
+
+            return redirect("/imovel/$id")->with('msg', 'O imóvel foi editado com sucesso!');
+        }
+        return redirect("/contrato/$id");
     }
+
+    public function up($id){
+        $contas = Contrato::verificarContas($id);
+
+        if ($contas) {
+            Imovel::find($id)->update(['status'=>"Disponivel"]);
+            return redirect("/imovel/$id");
+        }
+        //Imovel::find($id)->update(['status'=>"Disponivel"]);
+        return redirect("/contrato/$id");
+    }
+
+
 
     /**
      * Remove the specified resource from storage.

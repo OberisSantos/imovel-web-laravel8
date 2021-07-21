@@ -2,20 +2,19 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ContasReceber;
 use App\Models\Contato;
+use App\Models\Contrato;
 use App\Models\Dono;
 use App\Models\Endereco;
+use App\Models\Imovel;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class DonoControlador extends Controller
 {
 
-    public function dashboard(){
-
-        $user = auth()->user();
-        return view('proprietario.dashboard', ['user'=>$user]);
-    }
     /**
      * Display a listing of the resource.
      *
@@ -23,7 +22,55 @@ class DonoControlador extends Controller
      */
     public function index() //tela home
     {
-      //
+        $user = auth()->user();
+        if ($user->dono) {
+            $dono = Dono::find($user->dono->id);
+           // $contratos = Imovel::join('imoveis', 'dono_id',"=", $dono->id)->select('contratos->imovel_id', 'imoveis->id')->get();
+           // $contas = ContasReceber::table('contasareceber');
+           // $imoveis = Imovel::all()->where('dono_id',$user->dono->id);
+            $contratos = DB::table('locatarios')
+                        ->join('contratos', "locatario_id", "=", "locatarios.id")
+                        ->select("contratos.id", "contratos.inicio", "contratos.fim", "contratos.valor_mensal", "contratos.dia_pagamento", "contratos.situacao", "contratos.created_at", "locatarios.nome")
+                        ->where("locatarios.dono_id", $dono->id)
+                        -> get();
+
+            /*$contas = DB::table('locatarios')
+                        ->join('contratos', 'locatario_id', '=', 'locatarios.id')
+                        ->join('contasareceber', 'contrato_id', '=', 'contratos.id')
+                        ->where('locatarios.dono_id', $dono->id)
+                        ->get();
+            */
+            $contas_pg = DB::table('locatarios')
+                        ->join('contratos', 'locatario_id', '=', 'locatarios.id')
+                        ->join('contasareceber', 'contrato_id', '=', 'contratos.id')
+                        ->where('locatarios.dono_id', $dono->id)
+                        ->where('status', 'pago')
+                        ->get();
+
+            $contas_ag  = DB::table('locatarios')
+                    ->join('contratos', 'locatario_id', '=', 'locatarios.id')
+                    ->join('contasareceber', 'contrato_id', '=', 'contratos.id')
+                    ->where('locatarios.dono_id', $dono->id)
+                    ->where('status', 'aguardando')
+                    ->get();
+
+
+            //dd($contas_ag);
+            // $contratos = Contrato::all()->where('locatario_id',$user->dono->locatario->id);
+            //echo($user->dono->locatario->id);
+            //$locatarios = $dono->locatario->all();
+
+            //$contratos = $locatarios->contrato->all();
+            //foreach ($locatarios as $l) {
+                //dd($l->contato->id);
+
+            //}
+
+            return view('proprietario.dashboard', ['user'=>$user, 'dono'=>$dono, 'contratos'=>$contratos, 'contas_pg'=>$contas_pg, 'contas_ag'=>$contas_ag]);
+        }
+
+
+        //return view('proprietario.dashboard', ['user'=>$user]);
     }
 
     /**
@@ -35,7 +82,8 @@ class DonoControlador extends Controller
     {
         $user = auth()->user();
 
-        if(!Dono::where('user_id', $user->id)->count()>0){
+        //if(!Dono::where('user_id', $user->id)->count()>0){
+        if (!$user->dono){
             return view('proprietario.create');
         }
         return redirect("/proprietario/$user->dono()->id");
@@ -117,9 +165,13 @@ class DonoControlador extends Controller
     {
         $user = auth()->user();
 
-        if(Dono::where('user_id', $user->id)->count()>0){
+        //if(Dono::where('user_id', $user->id)->count()>0){
+        if($user->dono){
             $dono = Dono::find($user->id);
-            return view('proprietario.show', ['dono'=>$dono]);
+            $imoveis = Imovel::all()->where('dono_id', $dono->id);
+
+
+            return view('proprietario.show', ['dono'=>$dono, 'imoveis'=>$imoveis]);
         }
         return redirect('/dashboard')->with('msg', 'Usuário ainda não está cadastrado como proprietário de imóveis!');
     }

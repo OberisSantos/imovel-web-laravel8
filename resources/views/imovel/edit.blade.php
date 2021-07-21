@@ -1,18 +1,33 @@
 @extends('layouts.main')
 
-@section('titulo', 'Novo imovel')
+@section('titulo', 'Editar imovel')
 
 @section('conteudo')
     <div class="col-md-6 offset-md-3 p-3 mb-5" id="form_prop" ><!--bg-white-->
         <div class="titulo-form">
-            <h3 >Novo Imóvel</h3>
+            <h3 >Editar Imóvel</h3>
         </div>
-        <form action="/imovel" method="post" enctype="multipart/form-data" class="needs-validation" novalidate >
+        <form action="/imovel/update/{{$imovel->id}}" method="post" enctype="multipart/form-data">
             @csrf
-
-            <div class="form-group">
+            @method('PUT')
+            <div class="form-row">
+                <div class="col-8">
                 <label for="">Escolher uma imagem para o imóvel</label>
                 <input type="file" name="image" id="image" class="form-control-file">
+                </div>
+                <div class="col-4">
+                    <label>Status</label>
+                    <select name="status" class="form-control" id="">
+
+                        <option value={{$imovel->status}} @if ($imovel->status== $imovel->status){selected;} @endif>{{$imovel->status}}</option>
+
+                        <option value="Aguardando">Aguardando</option>
+                        <option value="Disponivel">Disponivel</option>
+                        <option value="Alugado">Alugado</option>
+                    </select>
+                </div>
+
+
             </div>
             <hr>
             <div class="form-row">
@@ -22,7 +37,7 @@
                         <label class='form-check-label' ><input type="radio" name='garagem' value='sim' class='form-check-input'>Sim</label>
                     </div>
                     <div class="form-check-inline">
-                        <label class='form-check-label' ><input type="radio" name='garagem' value='nao' class='form-check-input' checked>Não</label>
+                        <label class='form-check-label' ><input type="radio" name='garagem' value='nao' class='form-check-input'>Não</label>
                     </div>
                 </div>
                 <div class="col-3">
@@ -35,7 +50,7 @@
                             <label class='form-check-label' ><input type="radio" name='tipo' value='Apartamento' class='form-check-input'>Ap</label>
                         </div>
                         <div class="form-check-inline">
-                            <label class='form-check-label' ><input type="radio" name='tipo' value='Casa' class='form-check-input' checked>Casa</label>
+                            <label class='form-check-label' ><input type="radio" name='tipo' value='Casa' class='form-check-input'>Casa</label>
                         </div>
                         <div class="form-check-inline">
                             <label class='form-check-label' ><input type="radio" name='tipo' value='Quitinete' class='form-check-input'>Kitnet</label>
@@ -49,12 +64,11 @@
                     <div class="form-row">
                         <div class="form-group col-sm">
                             <label for="">Quartos</label>
-                            <input type="text" class="form-control" name="qt_quartos" placeholder="nº de quartos" required>
-                            <div>{{$errors->first('qt_quartos')}}</div>
+                            <input type="text" class="form-control" name="qt_quartos" value="{{$imovel->qt_quartos}}">
                         </div>
                         <div class="form-group col-sm">
                             <label for="">Suítes</label>
-                            <input type="text" class="form-control" name="qt_suite" placeholder="nº de suítes" required>
+                            <input type="text" class="form-control" name="qt_suite" value="{{$imovel->qt_suite}}">
                         </div>
                     </div>
                 </div>
@@ -64,7 +78,7 @@
                 <div class="col-4">
                     <div class="form-group">
                         <label for="">Valor mensal(R$)</label>
-                        <input type="text" name="valor" class="form-control" placeholder="R$" required>
+                        <input type="text" name="valor" value="{{$imovel->valor}} " class="form-control">
                     </div>
                 </div>
             </div>
@@ -74,14 +88,14 @@
                 <div class="col-9">
                     <div class="form-group">
                         <label for="">Rua:</label>
-                        <input type="text" class='form-control' name='rua' placeholder='Nome da rua' require='true'>
+                        <input type="text" class='form-control' value="{{$imovel->endereco->rua}}" name='rua' require='true'>
                     </div>
                 </div>
 
                 <div class="col-3">
                     <div class="form-group">
                         <label for="">Número:</label>
-                        <input type="text" class='form-control' name='numero' placeholder='Ex: 00' require='true'>
+                        <input type="text" class='form-control' name='numero' value="{{$imovel->endereco->numero}}" require='true'>
                     </div>
                 </div>
             </div>
@@ -90,27 +104,30 @@
                 <div class="col-4">
                     <div class="form-group">
                         <label for="">Bairro:</label>
-                        <input type="text" class='form-control' name="bairro" placeholder='Ex.: Centro' require='true'>
+                        <input type="text" class='form-control' value="{{$imovel->endereco->bairro}}" name="bairro" placeholder='Ex.: Centro' require='true'>
                     </div>
                 </div>
                 <div class="col-3">
                     <div class="form-group">
                         <label for="">CEP:</label>
-                        <input type="text" class='form-control' name="cep" placeholder='00000-000' require='true'>
+                        <input type="text" class='form-control' value="{{$imovel->endereco->cep}}" name="cep" placeholder='00000-000' require='true'>
                     </div>
                 </div>
                 <div class="col-3">
                     <div class="form-group">
                         <label for="">Cidade</label>
-                        <input type="text" class='form-control' name="cidade" placeholder='Cidade' require='true'>
+                        <input type="text" class='form-control' value="{{$imovel->endereco->cidade}}"  name="cidade" placeholder='Cidade' require='true'>
                     </div>
                 </div>
                 <div class="col-2">
                     <div class="form-group">
                         <label for="">UF</label>
+
                         <select name="uf" class='form-control' require='true'>
-                            <option value="pi">PI</option>
+                            <option value={{$imovel->endereco->uf}}>BA</option>
+                            <option value={{$imovel->endereco->uf}} @if ($imovel->endereco->uf == "pi"){selected;} @endif>PI</option>
                         </select>
+
                     </div>
                 </div>
             </div>
@@ -119,16 +136,16 @@
                 <div class="col-8">
                     <div class="form-group">
                         <label for="">Ponto de referência do imóvel</label>
-                        <textarea class="form-control" rows="5" id="referencia" name="referencia"></textarea>
+                        <textarea class="form-control" rows="5" id="referencia" name="referencia">{{$imovel->endereco->referencia}}</textarea>
                     </div>
                 </div>
                 <div class="col-4">
                     <div class="form-group">
                         <label for="">Latitude</label>
-                        <input type="text" class="form-control" name="lat">
+                        <input type="text" class="form-control" value="{{$imovel->endereco->latitude}}" name="lat">
 
                         <label for="">Longitude</label>
-                        <input type="text" class="form-control" name="long">
+                        <input type="text" class="form-control" value="{{$imovel->endereco->longitude}}" name="long">
                     </div>
 
                 </div>

@@ -20,7 +20,7 @@ class Dono extends Model
         return $this->belongsTo(Contato::class); //trazer a chave
     }
     public function imovel(){
-        return $this->hasOne(Imovel::class); //levar a chave
+        return $this->hasMany(Imovel::class); //levar a chave
     }
 
     public function user()
@@ -29,6 +29,6 @@ class Dono extends Model
     }
 
     public function locatario(){
-        return $this->hasOne(Locatario::class); //levar a chave
+        return $this->hasMany(Locatario::class); //levar a chave
     }
 }

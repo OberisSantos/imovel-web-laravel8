@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ContasReceber;
 use Illuminate\Http\Request;
 
 class ContasReceberControlador extends Controller
@@ -23,7 +24,7 @@ class ContasReceberControlador extends Controller
      */
     public function create()
     {
-        //
+        return view('financas.createreceber');
     }
 
     /**
@@ -43,9 +44,19 @@ class ContasReceberControlador extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($id=null)
     {
-        //
+        $user = auth()->user();
+        if ($id != null) {
+            $contas = ContasReceber::where('contrato_id', $id)->get();
+            if($contas != null){
+                //if($user->dono->id == $contas->dono_id){
+                return view('financas.show', ['contas'=> $contas]);
+                //}
+            }
+        }
+
+        return redirect('/dashboard');
     }
 
     /**

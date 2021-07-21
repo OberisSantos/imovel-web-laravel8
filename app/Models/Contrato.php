@@ -11,12 +11,30 @@ class Contrato extends Model
 
     protected $table = 'contratos';
 
-    protected $guarded = [];
+    protected $guarded = [];//permitir update
+
+
+    public static function verificarContas($id){
+        $imovel = Imovel::find($id);
+        $ctaberto = false;
+        if ($imovel != null) {
+            $contratos = $imovel->contrato;
+            $ctaberto = true;
+            foreach ($contratos as $contrato) {
+                if($contrato->situacao == 'Aberto'){
+                    $ctaberto = false;
+                    break;
+                }
+            }
+        }
+        return $ctaberto;
+    }
 
     protected $dates = [
         'created_at',
         'updated_at',
-        'inicio'
+        'inicio',
+        'fim'
     ];
 
     protected $casts  = [
@@ -31,6 +49,10 @@ class Contrato extends Model
     public function imovel(){
         return $this->belongsTo(Imovel::class);//trazer a chave
     }
+
+    //public function contasreceber(){
+        // $this-
+    //}
 
 
 }

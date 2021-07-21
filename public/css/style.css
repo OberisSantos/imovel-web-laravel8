@@ -24,10 +24,77 @@ a:link{
 
 }
 
+.jumbotron-deshboard{
+    flex: 1;
+    text-align: center;
+    height: 100px;
+    padding: 10px;
+}
+
+/*button desbord */
+.date-time{
+    justify-content: flex-end;
+    border-radius: 5px;
+    color:  #030303;;
+    align-items: baseline;
+    font-weight: 700;
+
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: 100;
+    margin-top: 0px;
+
+}
+.icone-table{
+    width: 15px;
+    height: 15px;
+    text-decoration: none;
+    color: black;
+}
+
+
+.btn-contrato{
+    width: 145px;
+    height: 40px;
+
+    background: #6085A7;
+    border-radius: 5px;
+
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 18px;
+    /* identical to box height */
+    align-items: center;
+    text-align: center;
+    color: #FFFFFF;
+}
+
+.btn-locatario{
+    width: 145px;
+    height: 40px;
+
+    background: #B86C41;
+    border-radius: 5px;
+
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 18.3256px;
+    /* identical to box height */
+    align-items: center;
+    text-align: center;
+    color: #FFFFFF;
+}
+
 /*stilos para a pagina*/
 
-main .container-fluid {
-    padding: 6px 15px 0px;
+.container {
+    padding: 6px;
+    margin-top: 5px;
+    background-color: rgba(255, 255, 255, 0.699);
+    flex: 1;
+
   }
 
 .footer {

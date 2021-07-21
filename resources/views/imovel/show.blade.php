@@ -1,14 +1,13 @@
 @extends('layouts.main')
 
-@section('titulo', 'proprietario')
+@section('titulo', 'Imoveis')
 
 @section('conteudo')
 
     <div class="col-md-7 offset-md-3">
-        <h5>Detalhe do imóvel</h5>
-
         @isset($imovel)
-            <div class="card mb-3" style="max-width: 720px;">
+            <h5>Detalhe do imóvel</h5>
+            <div class="card mb-3" style="max-width: 900px;">
                 <div class="row no-gutters">
                     <div class="col-md-5">
                         <a href=""><img class="img-fluid float-center" src="/img/imovel/{{$imovel->img_perfil}}" alt=""  height="auto" max-width="100%"></a>
@@ -39,7 +38,7 @@
                                             <td>{{$imovel->qt_suite}}</td>
                                             <td>{{$imovel->valor}}</td>
                                             <td>
-                                                <a href="">
+                                                <a href="/imovel/edit/{{$imovel->id}}">
                                                     @switch($imovel->status)
                                                         @case("Aguardando")
                                                             <span class="badge badge-warning">{{$imovel->status}}</span>
@@ -98,7 +97,7 @@
                     <a href="" title="Apagar" class="btn btn-danger btn-sm mr-2">
                         <span class="material-icons">delete</span>
                     </a>
-                    <a href=""  title="Editar" class="btn btn-secondary btn-sm mr-2">
+                    <a href="/imovel/edit/{{$imovel->id}}"  title="Editar" class="btn btn-secondary btn-sm mr-2">
                         <span class="material-icons">edit</span>
                     </a>
 

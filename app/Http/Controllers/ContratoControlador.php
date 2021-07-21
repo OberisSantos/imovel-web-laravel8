@@ -69,7 +69,7 @@ class ContratoControlador extends Controller
 
                 ContasReceber::setConta($contrato);
 
-               return redirect ("/contas/$contrato->id")->with('msg','Contrato cadastrado, aguardando confirmação!');
+               //return redirect ("/contas/$contrato->id")->with('msg','Contrato cadastrado, aguardando confirmação!');
         }
 
         }
@@ -84,13 +84,23 @@ class ContratoControlador extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($id=null)
     {
+        $user = auth()->user();
+
         $contrato = Contrato::find($id);
-        if($contrato != null){
-            return view('contrato.list', ['contrato'=>$contrato]);
+
+        //if($contrato != null && $contrato->imovel->dono == $user->dono){
+           /// return view('contrato.list', ['contrato'=>$contrato]);
+       // }
+
+        $contratos = Contrato::all()->where("$user->dono->imovel->dono_id", $user->dono->id);
+        //$contratos = $user->dono->imovel->contrato->all();
+
+        foreach ($contratos as $contrato) {
+            echo($contrato->imovel->dono->id . " - ");
         }
-        return view('contrato.list',['contrato'=>$contrato])->with('msg', 'Nenhum contrato localizado');
+        //return view('contrato.list',['contratos'=>$contratos])->with('msg', 'O contrato não foi localizado');
     }
 
     public function add($id)
@@ -130,11 +140,22 @@ class ContratoControlador extends Controller
      */
     public function update(Request $request, $id)
     {
-        $contrato = $request->all();
+        if ($request->situacao == 'Finalizado') {
+            $contrato = Contrato::find($id);
+            if ($contrato != null) {
+                $conta = ContasReceber::where('contrato_id', $contrato->id)->get();
+                if(count($conta) > 0){
+                    return redirect("/conta/receber/list/$contrato->id")->with('msg', 'Existe conta em aberto para esse processo');
+                }
 
+            }
+
+
+        }
+        $contrato = $request->all();
         Contrato::findOrFail($id)->update($contrato);
 
-        return redirect("/contrato/$id");
+       return redirect("/contrato/$id");
 
     }
 
