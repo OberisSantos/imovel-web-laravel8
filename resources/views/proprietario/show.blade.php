@@ -6,7 +6,8 @@
 
 
     <div class="row-col-12 text-right">
-        <button type="button" class="btn mb-3 btn-primary">Novo Imóvel</button>
+        <a href="/imovel/create" class="btn mb-3 btn-primary">Novo Imóvel</a>
+
     </div>
 
     @isset($dono)
@@ -22,7 +23,6 @@
                         <th>Rg</th>
                         <th>Endereço</th>
                         <th>Contato</th>
-                        <th>Ações</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -34,11 +34,10 @@
                         <td>{{$dono->rg}}</td>
                         <td>{{$dono->endereco->rua}} nº {{$dono->endereco->numero}}</td>
                         <td>{{$dono->contato->tel}}</td>
-                        <td>
+                        <!--<td>
                             <a href=""><button class="btn btn-danger">Apagar</button></a>
                             <a href=""><button class="btn btn-secondary">Editar</button></a>
-                        </td>
-
+                        </td>-->
                     </tr>
 
                 </tbody>

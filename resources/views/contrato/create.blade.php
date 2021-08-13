@@ -26,7 +26,7 @@
                     </div>
                     <div class="col-6">
                         <label for="">Imóvel:</label>
-                        <select name="imovel" id="" class="form-control">
+                        <select name="imovel" id="imovel" class="form-control">
                             @isset($imoveis)
                                 @foreach ($imoveis as $imovel)
                                     <option value={{$imovel->id}}>
@@ -80,14 +80,13 @@
                         <label for="">Situação</label>
                         <select name="situacao" id="" class="form-control">
                             <option value="Aberto">Aberto</option>
-                            <option value="Pendente">Pendente</option>
                         </select>
                     </div>
                 </div>
             </div>
             <div class="form-row text-right">
                 <div class="col-12">
-                    <button type="submit" id='salvar' class='btn btn-success'>Salvar</button>
+                    <button type="submit" id='salvar' id='salvar' class='btn btn-success'>Salvar</button>
                 </div>
              </div>
 

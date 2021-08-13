@@ -8,6 +8,7 @@ use App\Models\Imovel;
 use App\Models\Locatario;
 use Illuminate\Http\Request;
 use PhpParser\Node\Stmt\Echo_;
+use Illuminate\Support\Facades\DB;
 
 class ContratoControlador extends Controller
 {
@@ -43,7 +44,7 @@ class ContratoControlador extends Controller
 
         if($user->dono){
             $locatario = Locatario::find($request->locatario);
-            $imovel = Imovel::find($request->imovel);
+            $imovel = Imovel::find(7);
 
             if($locatario != null && $imovel != null){
                 $contrato = new Contrato();
@@ -58,6 +59,9 @@ class ContratoControlador extends Controller
                 $contrato->situacao = $request->situacao;
 
                 $contrato->save();
+
+                $imovel->update(['status'=>'Alugado']);
+
                 /*
                 $cr = new ContasReceber();
                 $cr->contrato()->associate($contrato->id);
@@ -69,7 +73,7 @@ class ContratoControlador extends Controller
 
                 ContasReceber::setConta($contrato);
 
-               //return redirect ("/contas/$contrato->id")->with('msg','Contrato cadastrado, aguardando confirmação!');
+               return redirect ("/contas/$contrato->id")->with('msg','Contrato cadastrado com sucesso!');
         }
 
         }
@@ -87,20 +91,23 @@ class ContratoControlador extends Controller
     public function show($id=null)
     {
         $user = auth()->user();
+        if($id != null && $id != '{}'){
+            $contrato = DB::table('locatarios')
+                        ->join('contratos', "locatario_id", "=", "locatarios.id")
+                        ->where("locatarios.dono_id", $user->dono->id)
+                        ->where('contratos.id', $id)
+                        -> get();
 
-        $contrato = Contrato::find($id);
-
-        //if($contrato != null && $contrato->imovel->dono == $user->dono){
-           /// return view('contrato.list', ['contrato'=>$contrato]);
-       // }
-
-        $contratos = Contrato::all()->where("$user->dono->imovel->dono_id", $user->dono->id);
-        //$contratos = $user->dono->imovel->contrato->all();
-
-        foreach ($contratos as $contrato) {
-            echo($contrato->imovel->dono->id . " - ");
+            return view('contrato.list',['contrato'=>$contrato]);
         }
-        //return view('contrato.list',['contratos'=>$contratos])->with('msg', 'O contrato não foi localizado');
+
+        $contratos = DB::table('locatarios')
+                        ->join('contratos', "locatario_id", "=", "locatarios.id")
+                        ->where("locatarios.dono_id", $user->dono->id)
+                        -> get();
+
+
+        return view('contrato.list',['contratos'=>$contratos])->with('msg', 'O contrato não foi localizado');
     }
 
     public function add($id)
@@ -113,11 +120,12 @@ class ContratoControlador extends Controller
 
 
         if($locatario != null){
-            $imoveis = Imovel::all()->where('status', 'Disponivel');
+            $imoveis = Imovel::all()->where('dono_id', $user->dono->id)->where('status', 'Disponivel');
             return view('contrato.create', ['locatario'=> $locatario, 'imoveis'=>$imoveis]);
         }
         return redirect("locatario/list/$id")->with('msg', 'O locatário não foi localizado!');
     }
+
     /**
      * Show the form for editing the specified resource.
      *

@@ -6,10 +6,6 @@
 
     <div class="col-md-5 offset-md-3 shadow p-3 mb-6 rounded" id="form_prop" ><!--bg-white-->
 
-        @if(session('msg'))
-            <p>{{session('msg')}}</p>
-        @endif
-
         <div class="titulo-form">
             <h3 >Adicionar imagens</h3>
         </div>

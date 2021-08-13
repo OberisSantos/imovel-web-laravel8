@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Imagem;
+use App\Models\Cliente;
 use App\Models\Imovel;
 use Illuminate\Http\Request;
 
-class ImagemControlador extends Controller
+class ClienteControlador extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -25,18 +25,7 @@ class ImagemControlador extends Controller
      */
     public function create()
     {
-
-    }
-
-    public function add($id){
-        $imovel = Imovel::findOrFail($id);
-        $imagem = Imagem::all()->where('imovel_id', $imovel->id)
-        ->sortByDesc('created_at');
-
-        //$imagem = Imagem::table('imagens')->where('imovel_id', $imovel->id)->get();
-
-
-        return view('imagem.create', ['imovel'=> $imovel, 'imagem'=>$imagem]);
+        //
     }
 
     /**
@@ -47,28 +36,24 @@ class ImagemControlador extends Controller
      */
     public function store(Request $request)
     {
-        $imovel = Imovel::findOrFail($request->id);
-        $img = new Imagem();
-        // Image Upload
-        if($request->hasFile('image') && $request->file('image')->isValid()) {
-            $requestImage = $request->image;
 
-            $extension = $requestImage->extension();
-            //$name = uniqid(date('HisYmd'));
-            $imageName = md5($requestImage->getClientOriginalName() . strtotime("now")) . "." . $extension;
-            //$imageName = "{$name}.{$extension}";
+        $imovel_id = $request->imovel;
 
-            $requestImage->move(public_path('img/imagem'), $imageName);
-            $img->img = $imageName;
+        $imovel = Imovel::find($imovel_id);
 
+        if($imovel){
+            $cl = new Cliente();
+            $cl->email = $request->email;
+            $cl->nome = $request->nome;
+            $cl->telefone = $request->telefone;
+            $cl->imovel()->associate($imovel->id);
+
+            $cl->save();
+
+            return back()->with('msg','Aguarde que o proprietário vai entrar em contato')->withInput();
         }
 
-        $img->nome = $request->nome;
-        $img->imovel()->associate($imovel->id);
-
-        $img->save();
-
-        return back()->with('msg','Imagem adicionada com cucesso!')->withInput();
+        return redirect('/');
     }
 
     /**
@@ -79,7 +64,7 @@ class ImagemControlador extends Controller
      */
     public function show($id)
     {
-
+        //
     }
 
     /**

@@ -26,7 +26,7 @@
                     </div>
                     <div class="col-4">
                         <label for="">CPF:</label>
-                        <input type="text" class='form-control' name='cpf', placeholder='000.000.000-00' require='true'>
+                        <input type="text" class='form-control' id='cpf' name='cpf', placeholder='000.000.000-00' require='true'>
                     </div>
                 </div>
             </div>
@@ -71,7 +71,7 @@
                 <div class="col-sm-3">
                     <div class="form-group">
                         <label for="">CEP:</label>
-                        <input type="text" class='form-control' name="cep" placeholder='00000-000' require='true'>
+                        <input type="text" id='cep' class='form-control' name="cep" placeholder='00000-000' require='true'>
                     </div>
                 </div>
                 <div class="col-sm-3">
@@ -94,7 +94,7 @@
                 <div class="col-4">
                     <div class="form-group">
                         <label for="Telefone:">Telefone</label>
-                        <input type="text" name='tel' class='form-control' placeholder='(xx) x xxxx-xxxx' require>
+                        <input type="text" id='tel' name='tel' class='form-control' placeholder='(xx) x xxxx-xxxx' require>
                     </div>
                 </div>
 
@@ -124,8 +124,6 @@
     </div>
 
 
-
 @endsection
-
 
 

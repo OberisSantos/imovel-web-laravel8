@@ -13,6 +13,14 @@ class Imovel extends Model
     protected $table = "imoveis";
     protected $guarded = [];//permitir update
 
+    protected $dates = [
+        'created_at',
+        'updated_at'
+    ];
+
+    protected $casts  = [
+        'valor'=> 'decimal:2',
+    ];
 
 
     public function endereco(){
@@ -31,5 +39,9 @@ class Imovel extends Model
     public function contrato()
     {
         return $this->hasMany(Contrato::class);
+    }
+
+    public function cliente(){
+        return $this->hasMany(Cliente::class); //levar a chave
     }
 }

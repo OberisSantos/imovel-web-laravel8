@@ -13,7 +13,113 @@ body{
     /**font-family: Arial, Helvetica, sans-serif;*/
 }
 
+.shadow{
+    flex: 1;
+    justify-content: center;
+    align-items: center;
+
+
+}
+
+.card-img{
+    padding-top: 10px;
+    justify-content: center;
+
+}
+
+.card{
+    max-width: 350px;
+}
+
+.card-text{
+    display: flex;
+    font-size: 0.9rem;
+    margin-bottom: 5px;
+}
+.card-text>span{
+    color:#c77536;
+}
+
+.card-footer{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+}
+
+.card-footer>a{
+    text-decoration: none;
+    color: rgb(37, 37, 37);
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+}
+.card-footer>a>span{
+    padding-right: 10px;
+    color:#dec247;
+}
+
+
+.card-footer>a>span:hover{
+    padding-right: 10px;
+    color:#c77536;
+}
 /*stilos para a pagina*/
+
+.btn-home{
+    background-color: #706F6F;
+    width: 55px;
+    height: 40px;
+    text-align: center;
+    border-radius: 5px;
+}
+
+.btn-home:hover{
+    background-color: #94753A;
+}
+#home{
+    color: #fff;
+
+}
+
+.btn-pesquisa{
+    max-width: 130px;
+    height: 40px;
+    text-align: center;
+    border-radius: 5px;
+}
+
+ul>form>li{
+    display: flex;
+    margin-right: 5px;
+
+}
+ul{
+    justify-content: space-around;
+    align-items: center;
+}
+ul>form{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.btn-restrito{
+    background-color:#DE7E47;
+    height: 40px;
+    text-align: center;
+    border-radius: 5px;
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+.btn-login{
+    background-color: #DE7E47;
+    height: 40px;
+    text-align: center;
+    border-radius: 5px;
+    margin-left: 5px;
+}
 
 .footer {
 background-color: #f5f5f5;
@@ -77,3 +183,21 @@ user-select: none;
         font-size: 0.55rem;
     }
 }
+
+
+/*imagem*/
+
+.myImg {
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+
+  .myImg:hover {
+      opacity: 0.7;
+
+
+    }
+
+/*mansagem*/
+

@@ -29,23 +29,68 @@
                         <td>{{$conta->id}}</td>
                         <td>{{$conta->vencimento}}</td>
                         <td>{{$conta->pagamento}}</td>
-                        <td>{{$conta->valor_mensal}}</td>
+                        <td data-valor="{{$conta->valor_mensal}}">{{$conta->valor_mensal}}</td>
                         <td>{{$conta->valor_recebido}}</td>
                         <td>
                             @if ($conta->status == 'aguardando')
-                                <a href=""><button class="btn btn-warning" title="Concluir Cadastro">{{$conta->status}}</button></a>
+                                <button type="button" class="btn btn-warning" title="alterar status" data-toggle="modal" id='mudarStatus' data-target="#statusModal" data-id={{$conta->id}} >{{$conta->status}}</a>
                             @elseif ($conta->status == 'pago')
-                                <a href=""><button class="btn btn-success" title="Finalizar Contrato">{{$conta->status}}</button></a>
+                                <button type="button" class="btn btn-success" title="pago">{{$conta->status}}</button>
                             @endif
                         </td>
                         <td>{{$conta->contrato_id}}</td>
-                        <td>{{$conta->contrato->locatario->nome}}</td>
-                        <td>{{$conta->contrato->imovel->endereco->rua}} nº {{$conta->contrato->imovel->endereco->numero}}</td>
+                        <td>{{$conta->nome}}</td>
+                        <td>{{$conta->imovel_id}}</td>
                     </tr>
 
                     @endforeach
                 </tbody>
             </table>
+        </div>
+
+        <!--Aqui vai o modal para alterar status-->
+        <div class="modal fade" id="statusModal">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                    <h4 class="modal-title">Alterar para pago?</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+
+                    <!-- Modal body -->
+                    <form action="/conta/update/" method="post" id='form'>
+                        <div class="modal-body">
+                            <label>Status</label>
+                            @csrf
+                            @method('PUT')
+
+                            <input type="hidden" id='idConta' name="idConta" class="form-control" value=''>
+                            <div class="form-group">
+                                <label for="">Data pagamento</label>
+                                <input type="date" id='dataPagamento' name="dataPagamento" class="form-control" value=''>
+                            </div>
+                            <div class="form-group">
+                                <label for="">Valor recebido</label>
+                                <input type="text" id='valorRecebido' name="valorRecebido" class="form-control" value=''>
+                            </div>
+                            <label>Status</label>
+                            <select name="status" class="form-control" id="">
+                                <option value="pago">Pago</option>
+                            </select>
+                        </div>
+
+                        <!-- Modal footer -->
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                            <button type="submit" title="Confirmar" class="btn btn-warning ml-2">Confirmar</button>
+
+                        </div>
+                    </form>
+
+                </div>
+            </div>
         </div>
 
     @endisset

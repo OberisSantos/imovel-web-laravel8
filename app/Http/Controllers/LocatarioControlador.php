@@ -55,7 +55,6 @@ class LocatarioControlador extends Controller
             $end->cep = $request->cep;
             $end->cidade = $request->cidade;
             $end->uf = $request->uf;
-
             $end->save();
 
             //2 - cverificar se possuir perfil se não possuir criar um

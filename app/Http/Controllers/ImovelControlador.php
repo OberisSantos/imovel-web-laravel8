@@ -10,6 +10,7 @@ use Facade\FlareClient\Stacktrace\File;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Symfony\Component\Console\Input\Input;
 
 class ImovelControlador extends Controller
 {
@@ -20,7 +21,56 @@ class ImovelControlador extends Controller
      */
     public function index()
     {
-        return view('web-site.index');
+        $cit = [];
+        $imoveis = Imovel::all()->where('status', 'Disponivel');
+
+        foreach ($imoveis as $imovel) {
+           $cit[] = $imovel->endereco->cidade;
+        }
+        $cidades = array_unique($cit, SORT_REGULAR);
+
+        return view('web-site.index', ['imoveis'=>$imoveis, 'cidades'=>$cidades]);
+    }
+
+    public function search(Request $request){
+        $cidade = $request->cidade;
+        $quartos = $request->quartos;
+        $suite = $request->suite;
+        $tipo = $request->tipo;
+
+        $cit = [];
+        $imoveis = Imovel::all()->where('status', 'Disponivel');
+
+        foreach ($imoveis as $imovel) {
+            $cit[] = $imovel->endereco->cidade;
+        }
+        $cidades = array_unique($cit, SORT_REGULAR);
+
+        $imoveis = Imovel::all()
+            ->where('status', 'Disponivel')
+            ->where('endereco.cidade', $cidade)
+            ->where('qt_quartos', $quartos)
+            ->where('qt_suite', $suite)
+            ->where('tipo', $tipo)
+
+            ;
+
+
+        return view('web-site.index', ['imoveis'=>$imoveis, 'cidades'=>$cidades]);
+    }
+
+    public function detalhe($id){
+        $imovel = Imovel::find($id);
+        $cit = [];
+
+        $pesquisa = Imovel::all()->where('status', 'Disponivel');
+
+        foreach ($pesquisa as $imovel) {
+           $cit[] = $imovel->endereco->cidade;
+        }
+        $cidades = array_unique($cit, SORT_REGULAR);
+
+        return view('web-site.imovelDetalhe', ['imovel'=>$imovel, 'cidades' =>$cidades]);
     }
 
     /**
@@ -50,7 +100,7 @@ class ImovelControlador extends Controller
             //'qt_quartos'=>'required']);
             //'qt_quartos' => 'required|min:5|max:64',
 
-
+            /*
         $data = $request->validate([
             'qt_quartos' => 'required|unique:imoveis,qt_quartos',
             'qt_suite' => 'required',
@@ -59,20 +109,17 @@ class ImovelControlador extends Controller
             'qt_quartos.unique' => 'Ja existe esse valor',
             'qt_suite.required' => 'Informar a quantidade',
             ]);
-
+        */
         $user = auth()->user();
         if($user->dono){
             //1 - criar um endereco
             $end = new Endereco();
-            $end->rua = $request->rua;
+            $end->rua = ucwords($request->rua);
             $end->numero = $request->numero;
-            $end->bairro = $request->bairro;
+            $end->bairro = ucwords($request->bairro);
             $end->cep = $request->cep;
-            $end->cidade = $request->cidade;
+            $end->cidade = ucwords($request->cidade);
             $end->uf = $request->uf;
-            $end->latitude = $request->lat;
-            $end->longitude = $request->long;
-            $end->referencia = $request->referencia;
 
             $end->save();
 
@@ -82,6 +129,8 @@ class ImovelControlador extends Controller
             $imovel->garagem = $request->garagem;
             if($request->garagem == 'sim'){
                 $imovel->vagas_garagem = $request->vagas_garagem;
+            }else{
+                $imovel->vagas_garagem = 0;
             }
             $imovel->qt_quartos = $request->qt_quartos;
             $imovel->qt_suite = $request->qt_suite;
@@ -103,7 +152,7 @@ class ImovelControlador extends Controller
 
             }
             $imovel->endereco()->associate($end->id);
-            $imovel->dono()->associate($user->dono->id);//encontrar uma maneira de trazer o dono
+            $imovel->dono()->associate($user->dono->id);
             $imovel->save();
             return redirect("/imagem/add/$imovel->id")->with('msg', 'Imóvel cadastrado com sucesso!');
         }
@@ -204,22 +253,26 @@ class ImovelControlador extends Controller
      */
     public function destroy($id)
     {
-        $imovel = Imovel::findOrFail($id);
+        $imovel = Imovel::find($id);
 
-
-        //$image_path = app_path("img\imovel\\{$imovel->img_perfil}");
+        if($imovel->contrato->count() > 0){
+            return redirect("/contrato/$id")->with('msg', 'O imóvel possui contrato e não pode ser deletado');
+        }
         $image_path = public_path()."\img\imovel\\".$imovel->img_perfil;
 
-        var_dump($image_path);
+        foreach ($imovel->imagem as $imagem) {
+           $url_imagem = public_path()."\img\imagem\\".$imagem->img;
+           if ($url_imagem){
+                unlink($url_imagem);
+                $imagem->delete();
+            }
+        }
 
-
-        //app_path(img/imovel/{$imovel->img_perfil});
-        echo($image_path);
         if ($image_path) {
-            //File::delete($image_path);
             unlink($image_path);
         }
         $imovel->delete();
 
+        return redirect("/dashboard")->with('msg', 'O imóvel foi apagado com sucesso!');
     }
 }

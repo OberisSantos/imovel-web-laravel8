@@ -14,6 +14,7 @@ class ContasReceber extends Model
     use HasFactory;
 
     protected $table = 'contasareceber';
+    protected $guarded = [];//permitir update
 
     public function contrato(){
         return $this->belongsTo(Contrato::class);
@@ -22,12 +23,16 @@ class ContasReceber extends Model
     public static function setConta(Contrato $contrato)
     {
         $contrato = Contrato::find($contrato->id);
+
         if($contrato !=null && $contrato->situacao =='Aberto'){
             $data_pagamento = ($contrato->inicio)->format('Y-m')."-"."$contrato->dia_pagamento";
             //$data_pagamento = Date('Y')."-"."$contrato->inicio"."-"."$contrato->dia_pagamento";
             $fim = ($contrato->fim);
             $inicio = ($contrato->inicio);
-            $total_meses = $fim->diff($inicio)->m;
+            $ano = $fim->diff($inicio)->y;
+            $meses = $fim->diff($inicio)->m;
+
+            $total_meses = ($ano * 12) + $meses;
             //echo($data_pagamento);
             for ($i=0; $i < $total_meses; $i++) {
                 $cr = new ContasReceber();
@@ -39,6 +44,9 @@ class ContasReceber extends Model
 
                 $cr->save();
             }
+
+            return true;
         }
+        return false;
     }
 }

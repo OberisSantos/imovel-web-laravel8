@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\ContasReceber;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ContasReceberControlador extends Controller
 {
@@ -47,16 +48,25 @@ class ContasReceberControlador extends Controller
     public function show($id=null)
     {
         $user = auth()->user();
-        if ($id != null) {
+        $dono = $user->dono;
+
+        if ($id != null && $id != "{}") {
             $contas = ContasReceber::where('contrato_id', $id)->get();
             if($contas != null){
                 //if($user->dono->id == $contas->dono_id){
-                return view('financas.show', ['contas'=> $contas]);
+                    echo('ola');
+                //return view('financas.show', ['contas'=> $contas]);
                 //}
             }
         }
+        $contas_ag  = DB::table('locatarios')
+                    ->join('contratos', 'locatario_id', '=', 'locatarios.id')
+                    ->join('contasareceber', 'contrato_id', '=', 'contratos.id')
+                    ->where('locatarios.dono_id', $dono->id)
+                    ->get();
 
-        return redirect('/dashboard');
+
+        return view('financas.show', ['contas'=>$contas_ag]);
     }
 
     /**
@@ -77,9 +87,27 @@ class ContasReceberControlador extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $id = null)
     {
-        //
+        if($id == null){
+            $idConta = $request->idConta;
+        }else{
+            $idConta = $id;
+        }
+        $conta = ContasReceber::find($idConta);
+
+        if($conta != null){
+            $dados = [
+                'status'=>'pago',
+                'valor_recebido'=> $request->valorRecebido,
+                'pagamento'=>$request->dataPagamento
+            ];
+
+            $conta->update($dados);
+
+            return back()->with('msg','Status alterado com suesso!')->withInput();
+        }
+        return back()->with('msg','Não foi possível alterar!')->withInput();
     }
 
     /**

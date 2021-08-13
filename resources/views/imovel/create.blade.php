@@ -19,15 +19,14 @@
                 <div class="col-4">
                     <span>Garagem:</span>
                     <div class="form-check-inline">
-                        <label class='form-check-label' ><input type="radio" name='garagem' value='sim' class='form-check-input'>Sim</label>
+                        <label class='form-check-label' ><input type="radio" name='garagem' id='sim' value='sim' class='form-check-input' checked>Sim</label>
+                        <label class='form-check-label' ><input type="radio" name='garagem' id='nao' value='nao' class='form-check-input' >Não</label>
                     </div>
-                    <div class="form-check-inline">
-                        <label class='form-check-label' ><input type="radio" name='garagem' value='nao' class='form-check-input' checked>Não</label>
-                    </div>
+
                 </div>
                 <div class="col-3">
                     <div class="form-group">
-                        <input type="text" class='form-control' name='vagas_garagem' placeholder='Nº vagas'>
+                        <input type="text" id="vaga" class='form-control' name='vagas_garagem' placeholder='Nº vagas'>
                     </div>
                 </div>
                 <div class="col text-right">
@@ -64,7 +63,7 @@
                 <div class="col-4">
                     <div class="form-group">
                         <label for="">Valor mensal(R$)</label>
-                        <input type="text" name="valor" class="form-control" placeholder="R$" required>
+                        <input type="text" id='valor' name="valor" class="form-control" placeholder="R$" required>
                     </div>
                 </div>
             </div>
@@ -96,43 +95,51 @@
                 <div class="col-3">
                     <div class="form-group">
                         <label for="">CEP:</label>
-                        <input type="text" class='form-control' name="cep" placeholder='00000-000' require='true'>
+                        <input type="text" id='cep' class='form-control' name="cep" placeholder='00000-000' require='true'>
                     </div>
                 </div>
                 <div class="col-3">
                     <div class="form-group">
                         <label for="">Cidade</label>
-                        <input type="text" class='form-control' name="cidade" placeholder='Cidade' require='true'>
+                        <input type="text" id='cidade' class='form-control' name="cidade" placeholder='Cidade' require='true'>
                     </div>
                 </div>
                 <div class="col-2">
                     <div class="form-group">
                         <label for="">UF</label>
-                        <select name="uf" class='form-control' require='true'>
-                            <option value="pi">PI</option>
+                        <select id="uf" name="uf" class='form-control'>
+                            <option value="AC">Acre</option>
+                            <option value="AL">Alagoas</option>
+                            <option value="AP">Amapá</option>
+                            <option value="AM">Amazonas</option>
+                            <option value="BA">Bahia</option>
+                            <option value="CE">Ceará</option>
+                            <option value="DF">Distrito Federal</option>
+                            <option value="ES">Espírito Santo</option>
+                            <option value="GO">Goiás</option>
+                            <option value="MA">Maranhão</option>
+                            <option value="MT">Mato Grosso</option>
+                            <option value="MS">Mato Grosso do Sul</option>
+                            <option value="MG">Minas Gerais</option>
+                            <option value="PA">Pará</option>
+                            <option value="PB">Paraíba</option>
+                            <option value="PR">Paraná</option>
+                            <option value="PE">Pernambuco</option>
+                            <option value="PI">Piauí</option>
+                            <option value="RJ">Rio de Janeiro</option>
+                            <option value="RN">Rio Grande do Norte</option>
+                            <option value="RS">Rio Grande do Sul</option>
+                            <option value="RO">Rondônia</option>
+                            <option value="RR">Roraima</option>
+                            <option value="SC">Santa Catarina</option>
+                            <option value="SP">São Paulo</option>
+                            <option value="SE">Sergipe</option>
+                            <option value="TO">Tocantins</option>
                         </select>
                     </div>
                 </div>
             </div>
 
-            <div class="form-row">
-                <div class="col-8">
-                    <div class="form-group">
-                        <label for="">Ponto de referência do imóvel</label>
-                        <textarea class="form-control" rows="5" id="referencia" name="referencia"></textarea>
-                    </div>
-                </div>
-                <div class="col-4">
-                    <div class="form-group">
-                        <label for="">Latitude</label>
-                        <input type="text" class="form-control" name="lat">
-
-                        <label for="">Longitude</label>
-                        <input type="text" class="form-control" name="long">
-                    </div>
-
-                </div>
-            </div>
 
             <div class="form-row text-right">
                 <div class="col-12">

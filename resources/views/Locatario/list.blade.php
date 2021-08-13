@@ -6,7 +6,7 @@
 
 
     <div class="row-col-12 text-right">
-        <button type="button" class="btn mb-3 btn-primary">Novo Locatário</button>
+        <a href="/locatario/create" class="btn mb-3 btn-primary">Novo Locatário</a>
     </div>
 
     @isset($locatario)
@@ -36,7 +36,7 @@
                         <td>{{$locatario->contato->tel}}</td>
                         <td>
                             <a href="/contrato/add/{{$locatario->id}}"><button class="btn btn-warning">Contrato</button></a>
-                            <a href=""><button class="btn btn-secondary">Editar</button></a>
+                            <!--<a href=""><button class="btn btn-secondary">Editar</button></a>-->
                         </td>
 
                     </tr>
@@ -79,7 +79,7 @@
                         <td>{{$lt->contato->tel}}</td>
                         <td>
                             <a href="/contrato/add/{{$lt->id}}"><button class="btn btn-warning">Contrato</button></a>
-                            <a href=""><button class="btn btn-secondary">Editar</button></a>
+                            <!--<a href=""><button class="btn btn-secondary">Editar</button></a>-->
                         </td>
 
 

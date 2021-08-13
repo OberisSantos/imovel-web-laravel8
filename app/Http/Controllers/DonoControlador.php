@@ -23,6 +23,9 @@ class DonoControlador extends Controller
     public function index() //tela home
     {
         $user = auth()->user();
+        $ano_atual = Date('Y');
+        $mes_atual = Date('m');
+
         if ($user->dono) {
             $dono = Dono::find($user->dono->id);
            // $contratos = Imovel::join('imoveis', 'dono_id',"=", $dono->id)->select('contratos->imovel_id', 'imoveis->id')->get();
@@ -52,6 +55,8 @@ class DonoControlador extends Controller
                     ->join('contasareceber', 'contrato_id', '=', 'contratos.id')
                     ->where('locatarios.dono_id', $dono->id)
                     ->where('status', 'aguardando')
+                    ->whereYear('vencimento', '<=', $ano_atual)
+                    ->whereMonth('vencimento', '<=', $mes_atual)
                     ->get();
 
 
@@ -70,7 +75,7 @@ class DonoControlador extends Controller
         }
 
 
-        //return view('proprietario.dashboard', ['user'=>$user]);
+        return view('proprietario.dashboard', ['user'=>$user]);
     }
 
     /**

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ClienteControlador;
 use App\Http\Controllers\ContasReceberControlador;
 use App\Http\Controllers\DonoControlador;
 use App\Http\Controllers\ImovelControlador;
@@ -19,9 +20,15 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
+//externo
 Route::get('/', [ImovelControlador::class, 'index']);
+Route::get('/imovel/detalhe/{id}', [ImovelControlador::class, 'detalhe']);
+Route::get('/search/imovel', [ImovelControlador::class, 'search']);
 
+Route::post('/mensagem', [ClienteControlador::class, 'store']);
+
+
+//interno
 Route::get('/prop/create', [DonoControlador::class, 'create'])->middleware('auth');
 Route::post('/proprietario', [DonoControlador::class, 'store'])->middleware('auth');
 Route::get('/proprietario/{id}', [DonoControlador::class,'show'])->middleware('auth');
@@ -56,6 +63,7 @@ Route::post('/contrato', [ContratoControlador::class, 'store'])->middleware('aut
 Route::get('/conta/receber/{id}', [ContasReceberControlador::class, 'create'])->middleware('auth');
 Route::post('/conta-receber', [ContasReceberControlador::class, 'store'])->middleware('auth');
 Route::get('/conta/receber/list/{id?}', [ContasReceberControlador::class, 'show'])->middleware('auth');
+Route::put('/conta/update/{id?}', [ContasReceberControlador::class, 'update'])->middleware('auth');
 
 /*
 Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
