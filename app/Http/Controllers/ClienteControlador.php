@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Cliente;
+use App\Models\Dono;
 use App\Models\Imovel;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ClienteControlador extends Controller
 {
@@ -62,9 +64,23 @@ class ClienteControlador extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($id=null)
     {
-        //
+        $user = auth()->user();
+        $ano_atual = Date('Y');
+        $mes_atual = Date('m');
+
+        if ($user->dono) {
+            $dono = Dono::find($user->dono->id);
+
+            $notific = DB::table('imoveis')
+            ->join('clientes', 'imovel_id', '=', 'imoveis.id')
+            ->where('imoveis.dono_id', $dono->id)
+            ->get();
+
+            return view('cliente.mensagens', ['mensagem'=>$notific]);
+        }
+
     }
 
     /**

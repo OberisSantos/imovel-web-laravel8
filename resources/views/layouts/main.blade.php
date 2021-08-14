@@ -87,8 +87,7 @@
                         @if (Auth::user()->dono)
                             <a class="nav-link dropdown-toggle" title="Cadastro" href="#" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Finanças</a>
                             <div class="dropdown-menu" aria-labelledby="dropdown01">
-                                <a class="dropdown-item" href="/conta/receber/list/{}">Listar contas à receber</a>
-                                <a class="dropdown-item" href="/locatario/create">Contas pagas</a>
+                                <a class="dropdown-item" href="/conta/receber/list/{}">Listar contas</a>
                             </div>
                         @endif
                     </li>
@@ -115,6 +114,8 @@
                             </a>
 
                         </li>
+                        @yield('notificacao')
+
                         <li class="nav-item">
                             <form action="/logout" method="post">
                                 @csrf

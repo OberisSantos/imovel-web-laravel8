@@ -1,6 +1,25 @@
 @extends('layouts.main')
 
+
 @section('titulo', 'dashboard')
+
+@section('notificacao')
+    @isset($notific)
+        <li class="nav-item">
+            <a class="nav-link" style="margin-right: 15px; height: 50px; display: flex; align-items: center; color: #fff; "  href="cliente/mensagem/" title="Mensagens" >
+                <span style="color: rgb(0, 0, 0)" class="material-icons">
+                    message
+                </span>
+                @if($notific->count() > 0)
+                    <span class="badge badge-notify" style="position:absolute; z-index: 99; background:red; top:10px;">
+                        {{@count($notific)}}
+                    </span>
+                @endif
+
+            </a>
+        </li>
+    @endisset
+@endsection
 
 @section('conteudo')
     @if($user)
@@ -21,7 +40,7 @@
                     <div class="row">
                         <div class="col">
                             <div class="card bg-light">
-                                <h5 class="card-header">Contas à pagar</h5>
+                                <h5 class="card-header">Contas à pagar mês atual</h5>
                                 <div class="card-body">
                                     @isset($contas_ag)
                                         @if ($contas_ag->count() > 0)

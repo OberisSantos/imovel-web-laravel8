@@ -95,7 +95,7 @@ class ContratoControlador extends Controller
             $contrato = DB::table('locatarios')
                         ->join('contratos', "locatario_id", "=", "locatarios.id")
                         ->where("locatarios.dono_id", $user->dono->id)
-                        ->where('contratos.id', $id)
+                        ->where('contratos.imovel_id', $id)
                         -> get();
 
             return view('contrato.list',['contrato'=>$contrato]);

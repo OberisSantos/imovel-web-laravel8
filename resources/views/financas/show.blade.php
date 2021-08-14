@@ -5,48 +5,50 @@
 @section('conteudo')
 
     @isset($contas)
+        @if (@count($contas) > 0)
 
-        <div class="table-responsive">
-            <h5>Lista de Contas</h5>
-            <table class="table table-sm shadow-sm">
-                <thead class="thead-light">
-                    <tr>
-                        <th>Conta</th>
-                        <th>Vencimento</th>
-                        <th>Pagamento</th>
-                        <th>Valor à pagar</th>
-                        <th>Valor Pago</th>
-                        <th>Situação</th>
-                        <th>Contrato</th>
-                        <th>Locatário</th>
-                        <th>Imóvel</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($contas as $conta)
+            <div class="table-responsive">
+                <h5>Lista de Contas</h5>
+                <table class="table table-sm shadow-sm">
+                    <thead class="thead-light">
+                        <tr>
+                            <th>Conta</th>
+                            <th>Vencimento</th>
+                            <th>Pagamento</th>
+                            <th>Valor à pagar</th>
+                            <th>Valor Pago</th>
+                            <th>Situação</th>
+                            <th>Contrato</th>
+                            <th>Locatário</th>
+                            <th>Imóvel</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($contas as $conta)
 
-                    <tr>
-                        <td>{{$conta->id}}</td>
-                        <td>{{$conta->vencimento}}</td>
-                        <td>{{$conta->pagamento}}</td>
-                        <td data-valor="{{$conta->valor_mensal}}">{{$conta->valor_mensal}}</td>
-                        <td>{{$conta->valor_recebido}}</td>
-                        <td>
-                            @if ($conta->status == 'aguardando')
-                                <button type="button" class="btn btn-warning" title="alterar status" data-toggle="modal" id='mudarStatus' data-target="#statusModal" data-id={{$conta->id}} >{{$conta->status}}</a>
-                            @elseif ($conta->status == 'pago')
-                                <button type="button" class="btn btn-success" title="pago">{{$conta->status}}</button>
-                            @endif
-                        </td>
-                        <td>{{$conta->contrato_id}}</td>
-                        <td>{{$conta->nome}}</td>
-                        <td>{{$conta->imovel_id}}</td>
-                    </tr>
+                        <tr>
+                            <td>{{$conta->id}}</td>
+                            <td>{{$conta->vencimento}}</td>
+                            <td>{{$conta->pagamento}}</td>
+                            <td data-valor="{{$conta->valor_mensal}}">{{$conta->valor_mensal}}</td>
+                            <td>{{$conta->valor_recebido}}</td>
+                            <td>
+                                @if ($conta->status == 'aguardando')
+                                    <button type="button" class="btn btn-warning" title="alterar status" data-toggle="modal" id='mudarStatus' data-target="#statusModal" data-id={{$conta->id}} >{{$conta->status}}</a>
+                                @elseif ($conta->status == 'pago')
+                                    <button type="button" class="btn btn-success" title="pago">{{$conta->status}}</button>
+                                @endif
+                            </td>
+                            <td>{{$conta->contrato_id}}</td>
+                            <td>{{$conta->nome}}</td>
+                            <td>{{$conta->imovel_id}}</td>
+                        </tr>
 
-                    @endforeach
-                </tbody>
-            </table>
-        </div>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+        @endif
 
         <!--Aqui vai o modal para alterar status-->
         <div class="modal fade" id="statusModal">

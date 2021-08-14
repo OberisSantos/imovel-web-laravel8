@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Cliente;
 use App\Models\ContasReceber;
 use App\Models\Contato;
 use App\Models\Contrato;
@@ -60,6 +61,13 @@ class DonoControlador extends Controller
                     ->get();
 
 
+            $notific = DB::table('imoveis')
+                        ->join('clientes', 'imovel_id', '=', 'imoveis.id')
+                        ->where('imoveis.dono_id', $dono->id)
+                        ->where('clientes.status', '=', '0')
+                        ->get();
+
+
             //dd($contas_ag);
             // $contratos = Contrato::all()->where('locatario_id',$user->dono->locatario->id);
             //echo($user->dono->locatario->id);
@@ -71,7 +79,7 @@ class DonoControlador extends Controller
 
             //}
 
-            return view('proprietario.dashboard', ['user'=>$user, 'dono'=>$dono, 'contratos'=>$contratos, 'contas_pg'=>$contas_pg, 'contas_ag'=>$contas_ag]);
+            return view('proprietario.dashboard', ['user'=>$user, 'dono'=>$dono, 'contratos'=>$contratos, 'contas_pg'=>$contas_pg, 'contas_ag'=>$contas_ag, 'notific'=>$notific]);
         }
 
 

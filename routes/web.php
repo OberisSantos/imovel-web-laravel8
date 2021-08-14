@@ -7,6 +7,7 @@ use App\Http\Controllers\ImovelControlador;
 use App\Http\Controllers\ImagemControlador;
 use App\Http\Controllers\LocatarioControlador;
 use App\Http\Controllers\ContratoControlador;
+use App\Models\Cliente;
 use App\Models\Imovel;
 use Illuminate\Support\Facades\Route;
 
@@ -28,7 +29,13 @@ Route::get('/search/imovel', [ImovelControlador::class, 'search']);
 Route::post('/mensagem', [ClienteControlador::class, 'store']);
 
 
+
+
 //interno
+Route::get('cliente/mensagem/{id?}', [ClienteControlador::class, 'show'])->middleware('auth');
+
+
+
 Route::get('/prop/create', [DonoControlador::class, 'create'])->middleware('auth');
 Route::post('/proprietario', [DonoControlador::class, 'store'])->middleware('auth');
 Route::get('/proprietario/{id}', [DonoControlador::class,'show'])->middleware('auth');

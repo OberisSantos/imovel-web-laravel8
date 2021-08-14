@@ -54,8 +54,13 @@ class ContasReceberControlador extends Controller
             $contas = ContasReceber::where('contrato_id', $id)->get();
             if($contas != null){
                 //if($user->dono->id == $contas->dono_id){
-                    echo('ola');
-                //return view('financas.show', ['contas'=> $contas]);
+                $contas  = DB::table('locatarios')
+                    ->join('contratos', 'locatario_id', '=', 'locatarios.id')
+                    ->join('contasareceber', 'contrato_id', '=', 'contratos.id')
+                    ->where('contrato_id', $id)
+                    ->where('locatarios.dono_id', $dono->id)
+                    ->get();
+                return view('financas.show', ['contas'=> $contas]);
                 //}
             }
         }

@@ -44,7 +44,6 @@
                                 @elseif ($contrato->situacao == 'Aberto')
                                     <a href="/contrato/edit/{{$contrato->id}}"><button class="btn btn-warning" title="Finalizar Contrato">Finalizar</button></a>
                                 @endif
-                                <a href="/contrato/edit/{{$contrato->id}}"><button class="btn btn-secondary">Editar</button></a>
                             </td>
 
                         </tr>
@@ -102,7 +101,6 @@
                                     <a href="/contrato/edit/{{$contrato->id}}"><button class="btn btn-warning" title="Finalizar Contrato">Finalizar</button></a>
                                 @endif
 
-                                <a href="/contrato/edit/{{$contrato->id}}"><button class="btn btn-secondary">Editar</button></a>
                             </td>
 
                         </tr>
