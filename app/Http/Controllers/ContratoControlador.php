@@ -44,7 +44,7 @@ class ContratoControlador extends Controller
 
         if($user->dono){
             $locatario = Locatario::find($request->locatario);
-            $imovel = Imovel::find(7);
+            $imovel = Imovel::find($request->imovel);
 
             if($locatario != null && $imovel != null){
                 $contrato = new Contrato();
@@ -73,7 +73,7 @@ class ContratoControlador extends Controller
 
                 ContasReceber::setConta($contrato);
 
-               return redirect ("/contas/$contrato->id")->with('msg','Contrato cadastrado com sucesso!');
+               return redirect ("/conta/receber/list/$contrato->id")->with('msg','Contrato cadastrado com sucesso!');
         }
 
         }
@@ -95,7 +95,7 @@ class ContratoControlador extends Controller
             $contrato = DB::table('locatarios')
                         ->join('contratos', "locatario_id", "=", "locatarios.id")
                         ->where("locatarios.dono_id", $user->dono->id)
-                        ->where('contratos.imovel_id', $id)
+                        ->where('contratos.id', $id)
                         -> get();
 
             return view('contrato.list',['contrato'=>$contrato]);

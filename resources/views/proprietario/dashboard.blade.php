@@ -50,9 +50,7 @@
                                                         <tr>
                                                             <th>Conta</th>
                                                             <th>Data Vencimento</th>
-                                                            <th>Data Pagamento</th>
                                                             <th>Valor à pagar</th>
-                                                            <th>Valor Pago</th>
                                                             <th>Contrato</th>
                                                             <th>Locatário</th>
                                                             <th>Imóvel</th>
@@ -66,12 +64,17 @@
                                                             @if ($conta->status == 'aguardando')
                                                                 <td>{{$conta->id}}</td>
                                                                 <td>{{$conta->vencimento}}</td>
-                                                                <td>{{$conta->pagamento}}</td>
-                                                                <td data-valor="{{$conta->valor_mensal}}">{{$conta->valor_mensal}}</td>
-                                                                <td>{{$conta->valor_recebido}}</td>
-                                                                <td>{{$conta->contrato_id}}</td>
+                                                                <td data-valor="{{$conta->valor_mensal}}">{{number_format($conta->valor_mensal, 2)}}</td>
+
+                                                                <td>
+                                                                    <a class="badge badge-info" href="/contrato/{{$conta->contrato_id}}">{{$conta->contrato_id}}</a>
+
+                                                                </td>
                                                                 <td>{{$conta->nome}}</td>
-                                                                <td>{{$conta->imovel_id}}</td>
+                                                                <td>
+                                                                    <a class="badge badge-info" href="/imovel/list/{{$conta->imovel_id}}">{{$conta->imovel_id}}</a>
+
+                                                                </td>
                                                                 <td>
                                                                     <a href="" data-toggle="modal" id='mudarStatus' data-target="#statusModal" data-id={{$conta->id}} class="btn btn-warning btn-sm" title="Mudar para pago">{{$conta->status}}</a>
                                                                 </td>
@@ -186,7 +189,7 @@
                                                             </td>
 
                                                             <td>{{$contrato->fim}}</td>
-                                                            <td>{{$contrato->valor_mensal}}</td>
+                                                            <td>{{number_format($contrato->valor_mensal, 2)}}</td>
                                                             <td>{{$contrato->dia_pagamento}}</td>
                                                             <td>{{$contrato->situacao}}</td>
                                                             <td>{{$contrato->created_at}}</td>
@@ -244,7 +247,7 @@
                                                     @if ($conta->status == 'pago')
                                                         <td>{{$conta->id}}</td>
                                                         <td>{{$conta->pagamento}}</td>
-                                                        <td>{{$conta->valor_recebido}}</td>
+                                                        <td>{{number_format($conta->valor_recebido, 2)}}</td>
                                                         <td>{{$conta->contrato_id}}</td>
                                                         <td>{{$conta->nome}}</td>
                                                         <td>

@@ -63,8 +63,9 @@
                                 <td>{{$imovel->tipo}}</td>
                                 <td>{{$imovel->endereco->rua}} nº {{$imovel->endereco->numero}}</td>
                                 <td>
-                                    <a href=""><button class="btn btn-danger">Apagar</button></a>
-                                    <a href=""><button class="btn btn-secondary">Editar</button></a>
+                                    <a href="/imovel/{{$imovel->id}}"  title="Mais Detalhes" class="btn btn-warning btn-sm ">
+                                        <span class="material-icons">visibility</span>
+                                    </a>
                                 </td>
 
                             </tr>

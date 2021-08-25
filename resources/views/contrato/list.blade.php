@@ -81,7 +81,7 @@
                         <tr>
                             <td>{{$contrato->id}}</td>
                             <td>{{$contrato->nome}}</td>
-                            <td>{{$contrato->imovel_id}}}}</td>
+                            <td>{{$contrato->imovel_id}}</td>
 
                             <td>
 

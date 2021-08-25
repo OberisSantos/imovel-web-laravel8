@@ -68,8 +68,7 @@
                                 <a class="dropdown-item" href="/contrato/{}">Todos os Contratos</a>
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="/locatario/list/">Locatário</a>
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="/prop/create">Proprietário</a>
+
                             </div>
                         @endif
                     </li>
@@ -96,14 +95,7 @@
                 <ul class="nav navbar-nav navbar-right" style="display: flex;align-items: flex-end">
                     @auth
 
-                        <li class="nav-item">
-
-                            <span  style="margin-right: 15px; min-width: 200px;  height: 50px; display: flex; align-items: center; color: rgb(7, 7, 7)">
-                                Seja bem-vindo: {{Auth::user()->name}}
-
-                            </span>
-
-                        </li>
+                        <!--
                         <li class="nav-item">
 
                             <a class="nav-link btn btn-secondary bg-transparent" style="margin-right: 15px; width: 140px; height: 50px; display: flex; align-items: center; color: rgb(7, 7, 7)"  href="/" title="Área externa">
@@ -113,17 +105,46 @@
 
                             </a>
 
-                        </li>
+                        </li>-->
                         @yield('notificacao')
-
                         <li class="nav-item">
+
+                            <span  style="height: 50px; display: flex; align-items: center; color: rgb(7, 7, 7)">
+                                Seja bem-vindo: {{Auth::user()->name}}
+
+                            </span>
+
+                        </li>
+                        <li class="nav-item"><!--
                             <form action="/logout" method="post">
                                 @csrf
                                 <a class="nav-link btn btn-info btn-sm" style="width: 50px;" href="/logout" title="Sair" onclick="event.preventDefault(); this.closest('form').submit();"><span style="color: beige" class="material-icons">
                                     logout
                                     </span></a>
-                            </form>
+                            </form>-->
+                            <li class="nav-item avatar dropdown">
+                                <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink-saju" data-toggle="dropdown"
+                                  aria-haspopup="true" aria-expanded="false">
+                                  <span class="material-icons">
+                                    account_circle
+                                    </span>
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-lg-right dropdown"
+                                  aria-labelledby="navbarDropdownMenuLink-saju">
+                                  <a class="dropdown-item" href="/proprietario/{{Auth::user()->id}}">Sobre</a>
+                                  <div class="dropdown-divider"></div>
+                                  <a class="dropdown-item" href="/">Área Externa</a>
+                                  <div class="dropdown-divider"></div>
+                                    <form action="/logout" method="post">
+                                        @csrf
+                                        <a class="dropdown-item" href="/logout" title='Sair' onclick="event.preventDefault(); this.closest('form').submit();">
+                                            <span class="material-icons">
+                                                logout
+                                            </span></a>
+                                    </form>
 
+                                </div>
+                            </li>
 
                         </li>
                     @endauth
@@ -139,6 +160,7 @@
                                 login
                                 </span></a>
                         </li>
+
                     @endguest
 
 

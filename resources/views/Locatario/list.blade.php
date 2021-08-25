@@ -4,10 +4,11 @@
 
 @section('conteudo')
 
-
-    <div class="row-col-12 text-right">
-        <a href="/locatario/create" class="btn mb-3 btn-primary">Novo Locatário</a>
-    </div>
+    @if(isset($locatarios))
+        <div class="row-col-12 text-right">
+            <a href="/locatario/create" class="btn mb-3 btn-primary">Novo Locatário</a>
+        </div>
+    @endif
 
     @isset($locatario)
 
@@ -49,7 +50,7 @@
 
     <hr>
 
-    @isset($locatarios)
+    @if(isset($locatarios))
 
         <div class="table-responsive">
             <h5>Lista de Locatários</h5>
@@ -89,7 +90,11 @@
                 </tbody>
             </table>
         </div>
-
-    @endisset
+    @else
+        <div class="jumbotron jumbotron-deshboard">
+            <h5> Não existe locatários cadastrados</h5>
+            <a href="/locatario/create" class="btn mb-3 btn-primary">Novo Locatário</a>
+        </div>
+    @endif
 
 @endsection

@@ -63,13 +63,13 @@ class ContasReceberControlador extends Controller
                 return view('financas.show', ['contas'=> $contas]);
                 //}
             }
+
         }
         $contas_ag  = DB::table('locatarios')
                     ->join('contratos', 'locatario_id', '=', 'locatarios.id')
                     ->join('contasareceber', 'contrato_id', '=', 'contratos.id')
                     ->where('locatarios.dono_id', $dono->id)
                     ->get();
-
 
         return view('financas.show', ['contas'=>$contas_ag]);
     }

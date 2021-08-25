@@ -5,6 +5,7 @@
 @section('conteudo')
 
     @isset($contas)
+
         @if (@count($contas) > 0)
 
             <div class="table-responsive">
@@ -47,6 +48,11 @@
                         @endforeach
                     </tbody>
                 </table>
+            </div>
+
+        @else
+            <div class="jumbotron jumbotron-deshboard">
+                <small> Não existe contas cadastradas</small>
             </div>
         @endif
 
@@ -95,6 +101,9 @@
             </div>
         </div>
 
+
     @endisset
+
+
 
 @endsection
